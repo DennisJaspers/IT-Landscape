@@ -27,8 +27,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        # >>> Als je app in de root staat, vervang 'ci-cd' door '.'
-        run: docker build ci-cd --file ci-cd/Dockerfile --tag ghcr.io/${{ github.repository }}:latest
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository }}
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
+          docker build ci-cd --file ci-cd/Dockerfile --tag $IMAGE_ID:latest
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}:latest
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository }}
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
+          docker push $IMAGE_ID:latest
