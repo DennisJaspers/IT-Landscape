@@ -1,0 +1,34 @@
+name: Publish Docker image to GitHub Packages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'ci-cd/**'
+      - '.github/workflows/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        # >>> Als je app in de root staat, vervang 'ci-cd' door '.'
+        run: docker build ci-cd --file ci-cd/Dockerfile --tag ghcr.io/${{ github.repository }}:latest
+
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository }}:latest
