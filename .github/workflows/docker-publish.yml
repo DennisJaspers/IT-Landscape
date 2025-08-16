@@ -16,6 +16,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Debug — list files
+        run: ls -R
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -24,10 +27,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
-        working-directory: ./ci-cd
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/it-landscape
-          docker build . --tag $IMAGE_ID:latest
+          docker build ./ci-cd --tag $IMAGE_ID:latest
 
       - name: Push Docker image
         run: |
