@@ -16,8 +16,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Debug — list files
-        run: ls -R
+      - name: Debug — list ci-cd files
+        run: ls -R ./ci-cd
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
@@ -30,7 +30,6 @@ jobs:
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/it-landscape
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
-          docker build ./ci-cd --tag $IMAGE_ID:latest
           docker build -f ./ci-cd/Dockerfile ./ci-cd --tag $IMAGE_ID:latest
 
       - name: Push Docker image
