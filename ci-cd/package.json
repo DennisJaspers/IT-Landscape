@@ -1,5 +1,5 @@
 {
-  "name": "docker-github-actions-example",
+  "name": "it-landscape",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
