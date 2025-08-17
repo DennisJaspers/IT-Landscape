@@ -30,7 +30,7 @@ jobs:
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/it-landscape
           IMAGE_ID=$(echo $IMAGE_ID | tr '[:upper:]' '[:lower:]')
-          docker build -f ./ci-cd/Dockerfile ./ci-cd --tag $IMAGE_ID:latest
+          docker build -f ./ci-cd/Dockerfile . --tag $IMAGE_ID:latest
 
       - name: Push Docker image
         run: |
